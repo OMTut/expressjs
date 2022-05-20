@@ -1,3 +1,5 @@
+const { response } = require('express');
+const { request } = require('express');
 const express = require('express');
 
 const app = express();
@@ -40,6 +42,13 @@ app.listen(PORT, () => console.log(
 **/
 app.get('/groceries', (req, res) => {
     res.send(groceryList)
+});
+
+//this is a route with a param
+app.get('/groceries/:item', (req, res) => {
+    const { item } = req.params;
+    const groceryItem = groceryList.find((g) => g.item === item);
+    res.send(groceryItem);
 });
 
 /**
