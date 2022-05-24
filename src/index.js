@@ -1,24 +1,12 @@
-const { response } = require('express');
-const { request } = require('express');
+// const { response } = require('express');
+// const { request } = require('express');
 const express = require('express');
+const cookieParser = require('cookie-parser');
+const groceriesRoute = require('./routes/groceries');
+const marketsRoute = require('./routes/markets');
 
 const app = express();
 const PORT = 3001;
-
-const groceryList = [
-    {
-        item: 'milk',
-        quantity: 2,
-    },
-    {
-        item: 'cereal',
-        quantity: 1,
-    },
-    {
-        item: 'bananas',
-        quantity: 1,
-    },
-]
 
 /**
  * Middleware function
@@ -28,36 +16,13 @@ const groceryList = [
  */
 app.use(express.json());
 app.use(express.urlencoded()); //formats to urlencoded
+app.use(cookieParser());
+
+//call router
+app.use('/api/groceries/', groceriesRoute);
+app.use('/api/markets', marketsRoute);
 
 app.listen(PORT, () => console.log(
     `Running Express Server on Port ${PORT}`
     )
 );
-
-/**
-* Get request - allows you to get a resource from the server
-* Get method takes 2 params
-* Path and Callback function. The callback function has 2 params
-* req (client sends data) and response (server handles data and returns)
-**/
-app.get('/groceries', (req, res) => {
-    res.send(groceryList)
-});
-
-//this is a route with a param
-app.get('/groceries/:item', (req, res) => {
-    const { item } = req.params;
-    const groceryItem = groceryList.find((g) => g.item === item);
-    res.send(groceryItem);
-});
-
-/**
- * Post request - creates a new resource
- * sends data from client to server
- * successful creation response is usually '201'
- */
-app.post('/groceries', (req, res) => {
-    console.log(req.body);
-    groceryList.push(req.body);
-    res.sendStatus(201);
-});
