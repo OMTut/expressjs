@@ -1,3 +1,4 @@
+const { response } = require('express');
 const { Router } = require('express');
 
 const router = Router();
@@ -48,5 +49,32 @@ router.post('/', (req, res) => {
     groceryList.push(req.body);
     res.sendStatus(201);
 });
+
+
+//when we call this endpoint, we're sending data back to the user
+router.get('/shopping/cart', (req, res) => {
+    const { cart } = req.session;
+    console.log('Cart');
+    if (!cart) {
+        res.send('You have no cart session');
+    } else {
+        res.send(cart);
+    }
+})
+
+//add items to the cart
+router.post('/shopping/cart/item', (req, res) => {
+    const { item, quantity } = req.body;
+    const cartItem = { item, quantity };
+    const { cart } = req.session;
+    if (cart) {
+        req.session.cart.items.push(cartItem);
+    } else {
+        req.session.cart = {
+            items: [cartItem],
+        }
+    }
+    res.send(201)
+})
 
 module.exports = router;

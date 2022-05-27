@@ -21,7 +21,8 @@
   "homepage": "https://github.com/OMTut/expressjs#readme",
   "dependencies": {
     "cookie-parser": "^1.4.6",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "express-session": "^1.17.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.16"

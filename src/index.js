@@ -2,6 +2,7 @@
 // const { request } = require('express');
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const groceriesRoute = require('./routes/groceries');
 const marketsRoute = require('./routes/markets');
 
@@ -17,6 +18,13 @@ const PORT = 3001;
 app.use(express.json());
 app.use(express.urlencoded()); //formats to urlencoded
 app.use(cookieParser());
+app.use(
+    session({
+        secret: 'ASDFLKJQWERPOIUASDFPOIUQWER',
+        resave: false,
+        saveUnitialized: false,
+    })
+)
 
 //call router
 app.use('/api/groceries/', groceriesRoute);
